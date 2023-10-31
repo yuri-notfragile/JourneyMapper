@@ -1,66 +1,62 @@
 'use strict';
 
-'use strict';
-
 function loadDayMap(day) {
-    // 세션 스토리지에서 여행 데이터 가져오기
     const travelData = JSON.parse(sessionStorage.getItem('travelData'));
-    // 해당 일자의 장소 데이터 필터링
     const dayData = travelData.filter(location => location.day === day);
+    if (dayData.length === 0) {
+        alert('해당 일자의 데이터가 없습니다.');
+        return;
+    }
 
-    // 각 장소의 위치와 이름을 positions 배열에 저장
     const positions = dayData.map(location => ({
         title: location.name,
-        address: location.address
     }));
 
-    // 지도 옵션 설정
     const mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도 중심 좌표 (제주도 중심 좌표)
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 3
     };
 
-    // 카카오맵을 생성
     const map = new kakao.maps.Map(document.getElementById('map'), mapOption);
 
-    // 주소-좌표 변환 객체를 생성
-    const geocoder = new kakao.maps.services.Geocoder();
+    // Promise를 사용하여 주소 검색과 마커 생성을 제어
+    Promise.all(positions.map(position => {
+        return new Promise((resolve, reject) => {
+            // 카카오맵 API를 사용하여 장소 이름으로 검색
+            const ps = new kakao.maps.services.Places();
 
-    // 각 위치에 대한 마커를 생성하고 지도에 추가
-    positions.forEach(position => {
-        // 주소로 좌표를 검색
-        geocoder.addressSearch(position.address, function (result, status) {
-            console.log('Status:', status);
-            console.log('Result:', result);
-            console.log('dayData:', dayData);
-            console.log('positions:', positions);
-            // 정상적으로 검색이 완료됐으면
-            if (status === kakao.maps.services.Status.OK) {
-                const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            ps.keywordSearch(position.title, function (data, status) {
+                if (status === kakao.maps.services.Status.OK && data.length > 0) {
+                    const place = data[0]; // 첫 번째 검색 결과 사용
 
-                // 마커 이미지 설정
-                const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-                const imageSize = new kakao.maps.Size(24, 35);
-                const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-                // 마커를 생성하여 지도에 표시
-                const marker = new kakao.maps.Marker({
-                    map: map,
-                    position: coords,
-                    title: position.title,
-                    image: markerImage
-                });
-
-                // 인포윈도우로 장소에 대한 설명을 표시
-                const infowindow = new kakao.maps.InfoWindow({
-                    content: `<div style="width:150px;text-align:center;padding:6px 0;">${position.title}</div>`
-                });
-                infowindow.open(map, marker);
-            }
+                    const coords = new kakao.maps.LatLng(place.y, place.x);
+                    const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+                    const imageSize = new kakao.maps.Size(24, 35);
+                    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+            
+                    const marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords,
+                        title: position.title, // 장소 이름
+                        image: markerImage
+                    });
+            
+                    const infowindow = new kakao.maps.InfoWindow({
+                        content: `<div style="width:150px;text-align:center;padding:6px 0;">${position.title}</div>`
+                    });
+                    infowindow.open(map, marker);
+                    resolve(); // Promise를 해결하여 비동기 작업이 완료되었음을 알림
+                } else {
+                    console.error('Error creating markers: Status:', status);
+                    reject(); // Promise를 거부하여 오류가 발생했음을 알림
+                }
+            });
         });
+    }))
+    .catch(error => {
+        console.error('Error creating markers:', error);
     });
 }
-
 // 여행 카드 생성
 function generateTravelCards(data) {
     if (!data || !Array.isArray(data) || data.length === 0) return;
@@ -68,25 +64,25 @@ function generateTravelCards(data) {
     const cardContainer = document.querySelector('.cards-container');
     cardContainer.innerHTML = '';
 
-    let currentDay = 1;
-    let dayCard = createDayCard(currentDay);
+    let currentDay = 0; // 초기값을 0으로 설정
+    let dayCard = null;
 
     data.forEach(locationData => {
         if (locationData.day !== currentDay) {
+            // 카드를 생성하고 추가
+            dayCard = createDayCard(locationData.day);
             cardContainer.appendChild(dayCard);
             currentDay = locationData.day;
-            dayCard = createDayCard(currentDay);
         }
 
         // 카드 클릭 시 해당 일자의 지도 로드
-        dayCard.addEventListener('click', () => loadDayMap(locationData.day));
+        const cardClickHandler = () => loadDayMap(locationData.day);
+        dayCard.addEventListener('click', cardClickHandler);
 
         const p = document.createElement('p');
-        p.innerText = `${locationData.name} - ${locationData.address}`;
+        p.innerText = locationData.name;
         dayCard.appendChild(p);
     });
-
-    cardContainer.appendChild(dayCard);
 }
 
 // 일자별 카드 생성
@@ -105,9 +101,6 @@ function createDayCard(day) {
 document.addEventListener('DOMContentLoaded', () => {
     // 세션 스토리지에서 여행 데이터 가져오기
     const travelData = JSON.parse(sessionStorage.getItem('travelData'));
-    // 확인
-    const rawData = sessionStorage.getItem('travelData');
-    console.log(rawData);
 
     // 여행 카드 생성
     generateTravelCards(travelData);
