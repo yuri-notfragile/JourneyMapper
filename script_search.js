@@ -5,12 +5,11 @@ const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 const userInput = document.querySelector('#queryInput');
 const sendButton = document.querySelector('.search-form button');
 const UserMessage = `
-사용자는 장소와 여행 기간에 대해 한국어로 질문할 것입니다. 각 일차별로 방문할 만한 2-3곳의 장소를 JSON 형식으로 제공해주세요. 그리고 효율적인 동선으로 추천해주세요. 응답형식은 다음과 같아야 합니다:
+사용자는 장소와 여행 기간에 대해 한국어로 질문할 것입니다. 각 일차별로 방문할 만한 3-4곳의 장소를 JSON 형식으로 제공해주세요. 사용자가 질문한 지역에서만 효율적인 동선으로 추천하세요. 응답형식은 다음과 같아야 합니다:
     [
         {
             "day": 1,
-            "name": "Place Name",
-            "address": "Place Address "
+            "name": "Place Name"
         }, ...
     `;
 
@@ -18,19 +17,11 @@ const validateResponseFormat = (response) => {
     if (!Array.isArray(response)) return false;
 
     for (const item of response) {
-        if (
-            !item.hasOwnProperty("day") ||
-            !item.hasOwnProperty("name") ||
-            !item.hasOwnProperty("address")
-        ) {
+        if (!item.hasOwnProperty("day") || !item.hasOwnProperty("name")) {
             return false;
         }
 
-        if (
-            typeof item.day !== "number" ||
-            typeof item.name !== "string" ||
-            typeof item.address !== "string"
-        ) {
+        if (typeof item.day !== "number" || typeof item.name !== "string") {
             return false;
         }
     }
