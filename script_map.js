@@ -14,7 +14,7 @@ function loadDayMap(day) {
 
     const mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3
+        level: 7
     };
 
     const map = new kakao.maps.Map(document.getElementById('map'), mapOption);
@@ -99,11 +99,12 @@ function createDayCard(day) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 세션 스토리지에서 여행 데이터 가져오기
+    const cardContainer = document.querySelector('.cards-container');
     const travelData = JSON.parse(sessionStorage.getItem('travelData'));
 
     // 여행 카드 생성
     generateTravelCards(travelData);
+
 
     // 페이지 이동 버튼 및 폼 관련 이벤트 처리
     const mypageButton = document.getElementById('mypageButton');
@@ -133,4 +134,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const travelDescription = document.querySelector('#travelDescription').value;
         });
     }
+    cardContainer.addEventListener('click', (event) => {
+        const card = event.target.closest('.card');
+        if (card) {
+            card.style.backgroundColor = 'lightgray'; // 클릭 시 색상 변경
+        }
+    });
+
+    cardContainer.addEventListener('mouseover', (event) => {
+        const card = event.target.closest('.card');
+        if (card) {
+            card.style.backgroundColor = 'lightgray'; // 호버 시 색상 변경
+        }
+    });
+
+    cardContainer.addEventListener('mouseout', (event) => {
+        const card = event.target.closest('.card');
+        if (card) {
+            card.style.backgroundColor = ''; // 호버 해제 시 원래 색상으로 복원
+        }
+    });
 });
