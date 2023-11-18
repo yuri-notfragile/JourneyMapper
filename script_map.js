@@ -1,7 +1,19 @@
 'use strict';
 
 function loadDayMap(day) {
-    const travelData = JSON.parse(sessionStorage.getItem('travelData'));
+    let travelData = JSON.parse(sessionStorage.getItem('travelData'));
+
+    if (!travelData) {
+        const selectedTravelData = JSON.parse(localStorage.getItem('selectedTravel'));
+        if (selectedTravelData && selectedTravelData.itinerary) {
+            travelData = selectedTravelData.itinerary;
+        }
+    }
+    if (!travelData) {
+        alert('여행 일정 정보가 없습니다.');
+        return;
+    }
+
     const dayData = travelData.filter(location => location.day === day);
     if (dayData.length === 0) {
         alert('해당 일자의 데이터가 없습니다.');
@@ -83,6 +95,26 @@ function generateTravelCards(data) {
         p.innerText = locationData.name;
         dayCard.appendChild(p);
     });
+    cardContainer.addEventListener('click', (event) => {
+        const card = event.target.closest('.card');
+        if (card) {
+            card.style.backgroundColor = 'lightgray'; // 클릭 시 색상 변경
+        }
+    });
+
+    cardContainer.addEventListener('mouseover', (event) => {
+        const card = event.target.closest('.card');
+        if (card) {
+            card.style.backgroundColor = 'lightgray'; // 호버 시 색상 변경
+        }
+    });
+
+    cardContainer.addEventListener('mouseout', (event) => {
+        const card = event.target.closest('.card');
+        if (card) {
+            card.style.backgroundColor = ''; // 호버 해제 시 원래 색상으로 복원
+        }
+    });
 }
 
 // 일자별 카드 생성
@@ -99,12 +131,21 @@ function createDayCard(day) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const cardContainer = document.querySelector('.cards-container');
-    const travelData = JSON.parse(sessionStorage.getItem('travelData'));
+    let travelData = JSON.parse(sessionStorage.getItem('travelData'));
+    if (!travelData) {
+        const selectedTravelData = JSON.parse(localStorage.getItem('selectedTravel'));
+        if (selectedTravelData && selectedTravelData.itinerary) {
+            travelData = selectedTravelData.itinerary;
+        }
+    }
 
-    // 여행 카드 생성
-    generateTravelCards(travelData);
-
+    // travelData가 유효하다면 여행 카드를 생성합니다.
+    if (travelData) {
+        generateTravelCards(travelData);
+    } else {
+        // 여기에 사용자에게 안내 메시지를 표시하는 로직을 추가할 수 있습니다.
+        console.log('여행 정보가 없습니다.');
+    }
 
     // 페이지 이동 버튼 및 폼 관련 이벤트 처리
     const mypageButton = document.getElementById('mypageButton');
@@ -134,24 +175,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const travelDescription = document.querySelector('#travelDescription').value;
         });
     }
-    cardContainer.addEventListener('click', (event) => {
-        const card = event.target.closest('.card');
-        if (card) {
-            card.style.backgroundColor = 'lightgray'; // 클릭 시 색상 변경
-        }
+
+    document.querySelector('#submitTravel').addEventListener('click', () => {
+        const travelTitle = document.querySelector('#travelTitle').value;
+        const travelDescription = document.querySelector('#travelDescription').value;
+        const searchedTravelData = JSON.parse(sessionStorage.getItem('travelData'));
+    
+        const newTravelInfo = {
+            title: travelTitle,
+            description: travelDescription,
+            itinerary: searchedTravelData
+        };
+    
+        // 'savedTravelInfos'는 사용자가 저장한 여러 여행 정보를 담는 배열입니다.
+        let savedTravelInfos = JSON.parse(localStorage.getItem('savedTravelInfos')) || [];
+        
+        // 새 여행 정보를 배열에 추가합니다.
+        savedTravelInfos.push(newTravelInfo);
+    
+        // 업데이트된 배열을 로컬 스토리지에 저장합니다.
+        localStorage.setItem('savedTravelInfos', JSON.stringify(savedTravelInfos));
+        alert('여행 정보가 저장되었습니다.');
     });
 
-    cardContainer.addEventListener('mouseover', (event) => {
-        const card = event.target.closest('.card');
-        if (card) {
-            card.style.backgroundColor = 'lightgray'; // 호버 시 색상 변경
-        }
-    });
-
-    cardContainer.addEventListener('mouseout', (event) => {
-        const card = event.target.closest('.card');
-        if (card) {
-            card.style.backgroundColor = ''; // 호버 해제 시 원래 색상으로 복원
-        }
-    });
+    
 });
