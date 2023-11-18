@@ -20,6 +20,8 @@ function loadDayMap(day) {
         return;
     }
 
+    //console.log(dayData)
+
     const positions = dayData.map(location => ({
         title: location.name,
     }));
@@ -157,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mypageButton) {
         mypageButton.addEventListener('click', () => {
             window.location.href = 'http://127.0.0.1:5500/mypage.html';
+            sessionStorage.removeItem('travelData');
         });
     }
 
