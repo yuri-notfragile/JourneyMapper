@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAEJJA - Search</title>
+  <link rel="stylesheet" href="page_search.css" />
+</head>
+<body>
+  <header>
+    <h1 class="logo">DAEJJA</h1>
+    <div class="greeting">안녕하세요 여행자님!</div>
+  </header>
+
+  <main>
+    <h2 class="search-title">여행기간과 지역을 포함해서 질문해주세요</h2>
+    <form class="search-form" id="searchForm">
+      <input type="text" id="queryInput" placeholder="여행 계획을 입력하세요" autocomplete="off"/>
+      <button type="submit">검색</button>
+    </form>
+    <div id="chat-messages"></div>
+  </main>
+
+  <div id="loading" class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 DAEJJA. All rights reserved.</p>
+  </footer>
+  <script src="script_search.js"></script>
+</body>
+</html>
