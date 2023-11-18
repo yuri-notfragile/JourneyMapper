@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지도 페이지</title>
+  <link rel="stylesheet" href="page_map.css">
+</head>
+<body>
+  <header style="background-color: rgb(86, 86, 86); color: white;">
+    <nav>
+      <h1 class="logo" id="logo">DAEJJA</h1>
+      <button id="mypageButton" class="mypage-button">마이페이지</button>
+    </nav>
+    <div class="greeting">여행자님께 추천하는 일정이에요!</div>
+  </header>
+  
+  <div class="container">
+    <div class="left-container" style="background-color: #eee;">
+      <div class="date-container">
+        <h2>일정 리스트</h2>
+        <hr class="hr-13">
+        <div class="cards-container">
+        </div>
+      </div>
+    </div>
+    <div class="right-container" style="background-color: #eee;">
+      <form class="search-form" id="newSearchForm">
+        <input type="text" id="newQueryInput" placeholder="새로운 여행을 검색하세요" autocomplete="off" />
+        <button type="submit">검색</button>
+      </form>
+      <button class="saveTravelButton">여행 저장하기</button>
+
+      <div id="loading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+      </div>
+    
+      <div id="travelForm" style="display: none;">
+        <input type="text" id="travelTitle" placeholder="여행 이름" autocomplete="off" />
+        <input type="text" id="travelDescription" placeholder="간단한 설명" autocomplete="off" />
+        <button id="submitTravel">저장</button>
+      </div>
+
+      <div id="map" style="width: 100%; height: 450px;"></div>
+      <script>
+        const logo = document.getElementById('logo');
+        logo.addEventListener('click', () => {
+            window.location.href = 'http://127.0.0.1:5500/page_search.html';
+        });
+    </script>
+
+      <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a00396149a1db92a12e95d1101d67ada&libraries=services"></script>
+      <script>
+        function initializeKakaoMap() {
+          if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
+            setTimeout(initializeKakaoMap, 100);
+            return;
+          }
+
+          var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
+
+          var map = new kakao.maps.Map(mapContainer, mapOption);
+        }
+        initializeKakaoMap();
+      </script>
+      <script>
+        const apiKey = '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';
+        const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+        const newQueryInput = document.querySelector('#newQueryInput');
+        const newSearchForm = document.querySelector('#newSearchForm');
+
+        const UserMessage = `
+        사용자는 장소와 여행 기간에 대해 한국어로 질문할 것입니다. 각 일차별로 방문할 만한 3-4곳의 장소를 JSON 형식으로 제공해주세요. 사용자가 질문한 지역에서만 효율적인 동선으로 추천하세요. 응답형식은 다음과 같아야 합니다:
+        [
+            {
+                "day": 1,
+                "name": "Place Name"
+            }, ...
+        `;
+
+        const validateResponseFormat = (response) => {
+        if (!Array.isArray(response)) return false;
+
+    for (const item of response) {
+        if (!item.hasOwnProperty("day") || !item.hasOwnProperty("name")) {
+            return false;
+        }
+
+        if (typeof item.day !== "number" || typeof item.name !== "string") {
+            return false;
+        }
+    }
+    return true;
+};
+
+// ChatGPT API 요청
+async function fetchAIResponse(prompt) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "system",
+                    content: UserMessage,
+                },
+                {
+                    role: "user",
+                    content: ` ${prompt}`,
+                },
+            ],
+        },
+        ),
+    };
+
+    // API 요청 후 응답 처리
+    try {
+        const response = await fetch(apiEndpoint, requestOptions);
+        if (!response.ok) {
+            throw new Error('ChatGPT API 오류');
+        }
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+        const jsonResponse = JSON.parse(aiResponse);
+
+        if (!validateResponseFormat(jsonResponse)) {
+            console.error('잘못된 형식의 응답입니다. 재시도 중...');
+            // 잘못된 형식의 응답일 경우, 동일한 프롬프트로 재귀적으로 요청
+            await fetchAIResponse(prompt);
+            return;
+        }
+        sessionStorage.setItem('travelData', JSON.stringify(jsonResponse));
+        window.location.href = '/page_map.html';
+      } catch (error) {
+        console.error('OpenAI API 호출 중 오류 발생:', error);
+        }
+    }
+  newSearchForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const message = newQueryInput.value.trim();
+    if (message.length === 0) return;
+    
+    document.getElementById('loading').style.display = 'block';
+
+    try {
+        await fetchAIResponse(message);
+        newQueryInput.value = '';
+
+        // 검색 완료 후 로딩 화면 숨기기
+        document.getElementById('loading').style.display = 'none';
+    } catch (error) {
+        console.error('검색 중 오류 발생:', error);
+
+        // 오류 발생 시 로딩 화면 숨기기
+        document.getElementById('loading').style.display = 'none';
+    }
+  });
+</script>
+      <script src="script_map.js" defer></script>
+    </div>
+  </div>
+</body>
+</html>
