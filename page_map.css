@@ -1,0 +1,264 @@
+/* 전체 페이지 스타일 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* 헤더 스타일 */
+  header {
+    background-color: #9a9a9a;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    margin-left: 20px; 
+  }
+  
+  .greeting {
+    font-size: 20px;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  /* 레이아웃 스타일 */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px;
+  }
+  
+  .left-container {
+    background-color: #f2f2f2;
+    padding: 20px;
+    width: 25%;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column; 
+    overflow-y: auto; /* 내용이 화면 높이를 초과할 경우 스크롤바 표시 */
+  }
+
+  .cards-container {
+    /* 카드 컨테이너에 대한 추가적인 스타일을 여기에 적용할 수 있습니다. */
+    margin-top: 20px; /* 예: 카드 컨테이너와 일정 리스트 제목 간의 간격 */
+  }
+  
+  .date-container {
+    margin-bottom: 20px;
+  }
+  
+  .date-container h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  hr.hr-13 {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #8c8c8c inset;
+  }
+  .date-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+  }
+  
+  .date-list li {
+    margin-bottom: 10px;
+  }
+  
+  .date-list a {
+    display: block;
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .date-list a:hover {
+    background-color: #e6e6e6;
+  }
+  
+  .right-container {
+    background-color: #f2f2f2;
+    padding: 10px;
+    width: 70%;
+    min-width: 200px;
+    position: relative;
+    height: 80vh; 
+  }
+
+/* 검색 창 스타일 */
+.search-form {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+#newQueryInput {
+  width: 30%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+#newQueryInput::placeholder {
+  color: #aaa;
+}
+
+#newQueryInput:focus {
+  border-color: #333;
+}
+
+#newQueryInput:focus::placeholder {
+  color: #333;
+}
+
+button[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #555;
+}
+
+/* 카드 스타일 지정 */
+.card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* 선택된 카드 스타일 지정 */
+.selected-card {
+  background-color: #e0e0e0;
+}
+
+/* 여행 저장하기 버튼 스타일 */
+.saveTravelButton {
+  width: 200px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 55px;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 10px;
+  transition: all .4s ease-in-out; 
+  background-image: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+  position: absolute;
+  top: 1px
+}
+
+.saveTravelButton:hover {
+  background-position: 100% 0;
+  transition: all .4s ease-in-out;
+}
+
+.saveTravelButton:focus {
+  outline: none;
+}
+
+.map-container {
+  position: relative;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  top: 50px;
+}
+
+#travelForm {
+  position: absolute;
+  padding: 18px;
+  width: 200px;
+  left: 20%;
+  top: 1%;
+}
+
+#travelTitle,
+#travelDescription {
+  width: 60%; /* 입력 필드의 너비 100%로 설정하여 부모 요소에 맞게 확장 */
+  padding: 10px; /* 내부 여백 추가 */
+  margin-bottom: 10px; /* 필드 간의 간격 조절 */
+  border: 1px solid #ccc;
+}
+
+.mypage-button {
+  background-color: #29323c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin-right: 10px; /* 오른쪽 여백 추가 */
+}
+
+.mypage-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease-in-out;
+}
+
+.logo:hover {
+  cursor: pointer; /* 호버 시 커서 모양 변경 (손가락 모양) */
+  text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+.loading-overlay {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+}
+
+.loading-spinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
