@@ -79,19 +79,23 @@ async function fetchAIResponse(prompt) {
     }
 }
 
-// 전송 버튼 클릭 이벤트 처리
-sendButton.addEventListener('click', async (event) => {
-    event.preventDefault(); // 폼 제출 기본 동작 막기
-    // 사용자가 입력한 메시지
+sendButton.addEventListener('click', (event) => {
+    event.preventDefault(); 
     const message = userInput.value.trim();
-    // 메시지가 비어있으면 리턴
     if (message.length === 0) return;
-    // ChatGPT API 요청 후 답변을 콘솔에서 확인
-    await fetchAIResponse(message);
+
+    document.getElementById('loading').style.display = 'block';
+
+    fetchAIResponse(message).then(() => {
+        document.getElementById('loading').style.display = 'none';
+    }).catch((error) => {
+        document.getElementById('loading').style.display = 'none';
+        console.error('An error occurred:', error);
+    });
+
     userInput.value = '';
 });
 
-// 사용자 입력 필드에서 Enter 키 이벤트를 처리
 userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
