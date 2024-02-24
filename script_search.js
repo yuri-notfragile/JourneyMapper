@@ -1,6 +1,6 @@
 'use strict';
 
-const apiKey = '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';
+const apiKey = '<KEY>';
 const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 const userInput = document.querySelector('#queryInput');
 const sendButton = document.querySelector('.search-form button');
@@ -28,7 +28,6 @@ const validateResponseFormat = (response) => {
     return true;
 };
 
-// ChatGPT API 요청
 async function fetchAIResponse(prompt) {
     const requestOptions = {
         method: 'POST',
@@ -52,7 +51,6 @@ async function fetchAIResponse(prompt) {
         ),
     };
 
-    // API 요청 후 응답 처리
     try {
         const response = await fetch(apiEndpoint, requestOptions);
         if (!response.ok) {
@@ -64,15 +62,12 @@ async function fetchAIResponse(prompt) {
 
         if (!validateResponseFormat(jsonResponse)) {
             console.error('잘못된 형식의 응답입니다. 재시도 중...');
-            // 잘못된 형식의 응답일 경우, 동일한 프롬프트로 재귀적으로 요청
             await fetchAIResponse(prompt);
             return;
         }
 
-        // 결과를 세션 스토리지에 저장
         sessionStorage.setItem('travelData', JSON.stringify(jsonResponse));
 
-        // 결과 확인 후 지도 페이지로 이동
         window.location.href = '/page_map.html';
     } catch (error) {
         console.error('OpenAI API 호출 중 오류 발생:', error);
