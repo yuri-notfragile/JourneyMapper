@@ -5,7 +5,6 @@ body {
     background-color: #f0f0f0;
   }
   
-  /* 헤더 스타일링 */
   header {
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -32,25 +31,24 @@ body {
     font-size: 20px;
     font-weight: bold;
     position: absolute;
-    top: 75%; /* 헤더 높이의 중앙으로 이동 */
-    left: 50%; /* 헤더 너비의 중앙으로 이동 */
+    top: 75%; 
+    left: 50%; 
     transform: translate(-50%, -50%); 
   }
 
-  /* 헤더 오른쪽 버튼 그룹 스타일 */
 .header-right {
     position: absolute;
-    top: 10px; /* 헤더 상단으로 조정 */
-    right: 10px; /* 헤더 오른쪽으로 조정 */
+    top: 10px; 
+    right: 10px;
   }
 
-/* 로그아웃, 회원탈퇴 버튼 스타일 */
+
 .logout-button, .unsubscribe-button {
     background-color: #29323c;
     color: white;
     border: none;
     padding: 10px 20px;
-    margin-left: 10px; /* 버튼 사이 간격을 조절합니다. */
+    margin-left: 10px; 
     cursor: pointer;
     border-radius: 5px;
   }
@@ -59,7 +57,6 @@ body {
     background-color: #2b5876;
   }
   
-  /* 여행 카드 스타일링 */
   .travel-list {
     display: flex;
     flex-wrap: wrap;
@@ -88,8 +85,8 @@ body {
   }
   
   .travel-card:hover {
-    background-color: #e0e0e0; /* 호버 시의 배경 색상 */
-    cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+    background-color: #e0e0e0; 
+    cursor: pointer;
   }
 
   .hidden {
