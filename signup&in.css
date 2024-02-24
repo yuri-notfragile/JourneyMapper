@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0; /* 옅은 회색 배경 */
+    background-color: #f0f0f0;
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,8 +11,8 @@ body {
 
 .container {
     width: 400px;
-    background-color: #fff; /* 흰색 배경 */
-    color: #000; /* 검은색 글자 */
+    background-color: #fff;
+    color: #000;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -34,13 +34,13 @@ body {
 
 h2 {
     margin-bottom: 20px;
-    text-align: center; /* 중앙 정렬 */
+    text-align: center;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
+    align-items: center;
 }
 
 input {
@@ -51,8 +51,8 @@ input {
 }
 
 button {
-    background-color: #000; /* 검은색 배경 */
-    color: #fff; /* 흰색 글자 */
+    background-color: #000;
+    color: #fff; 
     border: none;
     border-radius: 5px;
     padding: 10px;
@@ -68,20 +68,20 @@ button {
 .toggle button {
     background-color: transparent;
     border: none;
-    color: #000; /* 검은색 글자 */
+    color: #000;
     padding: 10px 20px;
     cursor: pointer;
 }
 
 .toggle .active {
-    background-color: #000; /* 검은색 배경 */
-    color: #fff; /* 흰색 글자 */
+    background-color: #000; 
+    color: #fff; 
 }
 
 .welcome-message {
-    text-align: center; /* 가운데 정렬 */
+    text-align: center; 
     color: #ccc; 
-    font-weight: bold; /* 굵은 글꼴 설정 */
+    font-weight: bold; 
     font-size: 24px; 
     position: absolute; 
     top: 0; 
