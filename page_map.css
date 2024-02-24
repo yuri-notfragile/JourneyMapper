@@ -1,11 +1,9 @@
-/* 전체 페이지 스타일 */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
   }
   
-  /* 헤더 스타일 */
   header {
     background-color: #9a9a9a;
     color: #fff;
@@ -33,7 +31,6 @@ body {
     text-align: center;
   }
   
-  /* 레이아웃 스타일 */
   .container {
     display: flex;
     justify-content: space-between;
@@ -48,12 +45,11 @@ body {
     min-width: 200px;
     display: flex;
     flex-direction: column; 
-    overflow-y: auto; /* 내용이 화면 높이를 초과할 경우 스크롤바 표시 */
+    overflow-y: auto; 
   }
 
   .cards-container {
-    /* 카드 컨테이너에 대한 추가적인 스타일을 여기에 적용할 수 있습니다. */
-    margin-top: 20px; /* 예: 카드 컨테이너와 일정 리스트 제목 간의 간격 */
+    margin-top: 20px;
   }
   
   .date-container {
@@ -103,7 +99,6 @@ body {
     height: 80vh; 
   }
 
-/* 검색 창 스타일 */
 .search-form {
   margin-bottom: 20px;
   text-align: right;
@@ -144,7 +139,6 @@ button[type="submit"]:hover {
   background-color: #555;
 }
 
-/* 카드 스타일 지정 */
 .card {
   border: 1px solid #ddd;
   padding: 10px;
@@ -153,12 +147,10 @@ button[type="submit"]:hover {
   background-color: #f9f9f9;
 }
 
-/* 선택된 카드 스타일 지정 */
 .selected-card {
   background-color: #e0e0e0;
 }
 
-/* 여행 저장하기 버튼 스타일 */
 .saveTravelButton {
   width: 200px;
   font-size: 20px;
@@ -207,9 +199,9 @@ button[type="submit"]:hover {
 
 #travelTitle,
 #travelDescription {
-  width: 60%; /* 입력 필드의 너비 100%로 설정하여 부모 요소에 맞게 확장 */
-  padding: 10px; /* 내부 여백 추가 */
-  margin-bottom: 10px; /* 필드 간의 간격 조절 */
+  width: 60%; 
+  padding: 10px; 
+  margin-bottom: 10px;
   border: 1px solid #ccc;
 }
 
@@ -221,7 +213,7 @@ button[type="submit"]:hover {
   font-size: 16px;
   font-weight: bold;
   padding: 10px 20px;
-  margin-right: 10px; /* 오른쪽 여백 추가 */
+  margin-right: 10px; 
 }
 
 .mypage-button:hover {
@@ -230,12 +222,12 @@ button[type="submit"]:hover {
 }
 
 .logo:hover {
-  cursor: pointer; /* 호버 시 커서 모양 변경 (손가락 모양) */
-  text-decoration: underline; /* 호버 시 밑줄 추가 */
+  cursor: pointer; 
+  text-decoration: underline; 
 }
 
 .loading-overlay {
-  display: none; /* 기본적으로 숨김 */
+  display: none; 
   position: fixed;
   top: 0;
   left: 0;
