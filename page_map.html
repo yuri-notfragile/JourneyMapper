@@ -49,7 +49,7 @@
         });
     </script>
 
-      <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a00396149a1db92a12e95d1101d67ada&libraries=services"></script>
+      <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<KEY>&libraries=services"></script>
       <script>
         function initializeKakaoMap() {
           if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
@@ -68,7 +68,7 @@
         initializeKakaoMap();
       </script>
       <script>
-        const apiKey = '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';
+        const apiKey = '<KEY>';
         const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
         const newQueryInput = document.querySelector('#newQueryInput');
         const newSearchForm = document.querySelector('#newSearchForm');
